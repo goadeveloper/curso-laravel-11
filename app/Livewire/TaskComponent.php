@@ -8,7 +8,7 @@ use Livewire\Component;
 class TaskComponent extends Component
 {
     public $tasks = [];
-    public $title, $description, $modalMode, $task_id;
+    public $title, $description, $task_id;
     public $modal = false, $update = false;
 
     public function mount()
@@ -30,7 +30,6 @@ class TaskComponent extends Component
     {
         $this->title = '';
         $this->description = '';
-        $this->modalMode = 'Crear nueva Tarea';
         $this->update = false;
     }
 
@@ -53,15 +52,14 @@ class TaskComponent extends Component
             $task->title = $this->title;
             $task->description = $this->description;
             $task->save();
-            $this->clearFields();
         } else {
             $newTask = new Task();
             $newTask->title = $this->title;
             $newTask->description = $this->description;
             $newTask->user_id = auth()->user()->id;
             $newTask->save();
-            $this->clearFields();
         }
+        $this->clearFields();
         $this->closeCreateModal();
         $this->tasks = $this->getTasks();
     }
@@ -77,7 +75,6 @@ class TaskComponent extends Component
         $this->title = $task->title;
         $this->description = $task->description;
         $this->task_id = $task->id;
-        $this->modalMode = 'Actualizar Tarea';
         $this->modal = true;
         $this->update = true;
     }
