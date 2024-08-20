@@ -12,7 +12,7 @@
                     <h1 class="text-2xl text-center border-b border-slate-100 mb-2">
                         Bienvenido/a al gestor de Tareas
                     </h1>
-                    {{ __("You're logged in!") }}
+                    <livewire:task-component />
                 </div>
             </div>
         </div>
