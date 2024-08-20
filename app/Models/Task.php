@@ -7,19 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Comment extends Model
+class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = ['*'];
+    protected $fillable = ['title', 'description', 'completed'];
+
+    protected $casts = [
+        'completed' => 'boolean',
+    ];
 
     /**
-     * Get the user that owns the Comment
+     * Get the user that owns the Task
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }
