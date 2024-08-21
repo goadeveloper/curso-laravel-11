@@ -1,10 +1,13 @@
 <div class="w-full overflow-x-auto">
-    <div class="flex justify-end py-2">
+    <div class="flex py-2 justify-between">
         <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" wire:click='openCreateModal'>
             Nueva Tarea
         </button>
+        <button class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700" wire:click='recoverAllTasks' wire:confirm='¿Desea recuperar todas las tareas eliminadas?'>
+            Recuperar Tareas Borradas
+        </button>
     </div>
-    <table class="w-full text-left border border-collapse rounded sm:border-separate border-slate-200" cellspacing="0">
+    <table wire:poll='renderAllTasks' class="w-full text-left border border-collapse rounded sm:border-separate border-slate-200" cellspacing="0">
       <tbody>
         <tr>
           <th scope="col" class="h-12 px-6 text-sm font-medium border-l first:border-l-0 stroke-slate-700 text-slate-700 bg-slate-100">Título</th>

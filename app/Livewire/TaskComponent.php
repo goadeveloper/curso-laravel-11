@@ -3,12 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\Task;
+use App\Models\User;
 use Livewire\Component;
 
 class TaskComponent extends Component
 {
     public $tasks = [];
-    public $title, $description, $task_id;
+    public $title, $description, $task, $task_id;
     public $modal = false, $update = false;
 
     public function mount()
@@ -24,6 +25,11 @@ class TaskComponent extends Component
     public function render()
     {
         return view('livewire.task-component');
+    }
+
+    public function renderAllTasks()
+    {
+        $this->tasks = $this->getTasks();
     }
 
     private function clearFields()
@@ -48,17 +54,16 @@ class TaskComponent extends Component
     {
         if($this->update)
         {
-            $task = Task::find($this->task_id);
-            $task->title = $this->title;
-            $task->description = $this->description;
-            $task->save();
+            $this->task = Task::find($this->task_id);
+            $this->task->title = $this->title;
+            $this->task->description = $this->description;
         } else {
-            $newTask = new Task();
-            $newTask->title = $this->title;
-            $newTask->description = $this->description;
-            $newTask->user_id = auth()->user()->id;
-            $newTask->save();
+            $this->task = new Task();
+            $this->task->title = $this->title;
+            $this->task->description = $this->description;
+            $this->task->user_id = auth()->user()->id;
         }
+        $this->task->save();
         $this->clearFields();
         $this->closeCreateModal();
         $this->tasks = $this->getTasks();
@@ -77,5 +82,12 @@ class TaskComponent extends Component
         $this->task_id = $task->id;
         $this->modal = true;
         $this->update = true;
+    }
+
+    public function recoverAllTasks()
+    {
+        $user = User::find(auth()->user()->id);
+        $user->tasks()->restore();
+        $this->tasks = $this->getTasks()->sortByDesc('created_at');
     }
 }
